@@ -1,11 +1,12 @@
 import { Fragment, useState } from 'react';
+import PropTypes from "prop-types";
 import Error from './Error';
 
-const Pregunta = () => {
+const Pregunta = ({ setPresupuesto, setResto, setShowPregunta }) => {
 
   const [cantidad, setCantidad] = useState(0);
   const [error, setError] = useState(false);
- 
+
 
   const agregarPresupuesto = e => {
     e.preventDefault();
@@ -16,6 +17,9 @@ const Pregunta = () => {
     }
 
     setError(false);
+    setPresupuesto(cantidad);
+    setResto(cantidad);
+    setShowPregunta(false);
   }
 
 
@@ -24,7 +28,7 @@ const Pregunta = () => {
       <h2>¿Cuál es tu ingreso mensual?</h2>
       {error ? <Error mensaje="El valor es incorrecto" /> : null}
       <form
-      onSubmit={agregarPresupuesto}
+        onSubmit={agregarPresupuesto}
       >
         <input
           type="number"
@@ -40,6 +44,12 @@ const Pregunta = () => {
       </form>
     </Fragment>
   )
+}
+
+Pregunta.propTypes = {
+  setPresupuesto: PropTypes.func.isRequired,
+  setResto: PropTypes.func.isRequired,
+  setShowPregunta: PropTypes.func.isRequired
 }
 
 export default Pregunta
