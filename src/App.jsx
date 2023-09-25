@@ -13,12 +13,11 @@ function App () {
   const [gasto, setGasto] = useState({});
   const [crearGasto, setCrearGasto] = useState(false);
 
+
+
   useEffect(() => {
     if (crearGasto) {
-      setGastos([
-        ...gastos,
-        gasto
-      ])
+      setGastos([...gastos, gasto])
 
       const totalGasto = resto - gasto.cantidad;
       setResto(totalGasto);
@@ -26,6 +25,21 @@ function App () {
       setCrearGasto(false);
     }
   }, [gasto, crearGasto, gastos, resto]);
+
+
+
+
+  const eliminarGasto = (id) => {
+    const gastoEliminado = gastos.find((g) => g.id === id);
+
+    if (gastoEliminado) {
+      const nuevoResto = resto + gastoEliminado.cantidad;
+      setResto(nuevoResto);
+    }
+
+    const gastosFiltrados = gastos.filter((g) => g.id !== id);
+    setGastos(gastosFiltrados);
+  };
 
 
   return (
@@ -43,18 +57,19 @@ function App () {
             <div className="row">
               <div className="one-half column">
                 <Formulario
-                    setGasto={setGasto}
-                    setCrearGasto={setCrearGasto}
+                  setGasto={setGasto}
+                  setCrearGasto={setCrearGasto}
                 />
               </div>
               <div className="one-half column">
                 <Listado
-                gastos={gastos}
-                  />
-                  <CalculoTotal
-                    presupuesto={presupuesto}
-                    resto={resto}
-                  />
+                  gastos={gastos}
+                  onEliminar={eliminarGasto}
+                />
+                <CalculoTotal
+                  presupuesto={presupuesto}
+                  resto={resto}
+                />
               </div>
             </div>
           )}

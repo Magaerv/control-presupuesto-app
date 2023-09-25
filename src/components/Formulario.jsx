@@ -6,13 +6,14 @@ import Error from './Error';
 const Formulario = ({ setGasto, setCrearGasto }) => {
 
   const [tipoGasto, setTipoGasto] = useState("");
-  const [cantidad, setCantidad] = useState(0);
+  const [cantidad, setCantidad] = useState("");
   const [error, setError] = useState(false);
+
 
   const agregarGasto = e => {
     e.preventDefault();
 
-    if (cantidad < 1 || isNaN(cantidad) || tipoGasto.trim() === "") {
+    if (parseFloat(cantidad) < 1 || isNaN(parseFloat(cantidad)) || tipoGasto.trim() === "") {
       setError(true);
       return
     }
@@ -21,15 +22,14 @@ const Formulario = ({ setGasto, setCrearGasto }) => {
 
     const gasto = {
       tipoGasto,
-      cantidad,
+      cantidad: parseFloat(cantidad),
       id: nanoid(),
     }
 
     setGasto(gasto);
     setCrearGasto(true);
-    
     setTipoGasto("");
-    setCantidad(0);
+    setCantidad("");
   }
 
   return (
@@ -43,7 +43,7 @@ const Formulario = ({ setGasto, setCrearGasto }) => {
       ) : (null)
       }
       <div className="campo">
-        <label>Nombre</label>
+        <label>Gasto</label>
         <input
           type="text"
           className="u-full-width"
@@ -53,7 +53,7 @@ const Formulario = ({ setGasto, setCrearGasto }) => {
         />
       </div>
       <div className="campo">
-        <label>Costo</label>
+        <label>Importe</label>
         <input
           type="number"
           className="u-full-width"
@@ -73,7 +73,7 @@ const Formulario = ({ setGasto, setCrearGasto }) => {
 
 Formulario.propTypes = {
   setGasto: PropTypes.func.isRequired,
-  setCrearGasto: PropTypes.func.isRequired
+  setCrearGasto: PropTypes.func.isRequired,
 }
 
 export default Formulario
